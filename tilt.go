@@ -21,15 +21,16 @@ const ( // iota starts at 0
 )
 
 // board constraints
-const (
-	num_rows              = 5
-	num_cols              = 5
-	num_inputs            = 2
-	num_poss              = 4
-	value_sum_maximum     = 5 * 3
-	voltorb_count_maximum = 5 * 1
-)
+// const (
+// 	num_rows              = 5
+// 	num_cols              = 5
+// 	num_inputs            = 2
+// 	num_poss              = 4
+// 	value_sum_maximum     = 5 * 3
+// 	voltorb_count_maximum = 5 * 1
+// )
 
+/*
 func main() {
 	var board [num_rows][num_cols]int
 	var input_vertical [num_rows][num_inputs]int
@@ -66,6 +67,7 @@ func main() {
 	update_poss(board, &board_poss)
 	print_board_poss(board_poss)
 }
+*/
 
 func print_board(board [num_rows][num_cols]int, input_vertical [num_rows][num_inputs]int, input_horizontal [num_cols][num_inputs]int) {
 	var board_str [num_rows][num_cols]string
@@ -237,54 +239,4 @@ func validate_board(board [num_rows][num_cols]int, input_vertical [num_rows][num
 	}
 
 	return true
-}
-
-func example_board_valid_complete() [5][5]int {
-	return [5][5]int{
-		{voltorb, val_one, val_one, val_two, val_one},
-		{val_one, val_one, val_two, val_one, val_one},
-		{voltorb, voltorb, voltorb, voltorb, val_two},
-		{voltorb, val_one, val_two, val_one, val_two},
-		{voltorb, val_one, val_two, voltorb, val_two},
-	}
-}
-
-func example_input_vertical() [5][num_inputs]int {
-	return [5][2]int{
-		{5, 1},
-		{6, 0},
-		{2, 4},
-		{6, 1},
-		{5, 2},
-	}
-}
-
-func example_input_horizontal() [5][num_inputs]int {
-	return [5][2]int{
-		{1, 4},
-		{4, 1},
-		{7, 1},
-		{4, 2},
-		{8, 0},
-	}
-}
-
-func example_board_valid_incomplete() [5][5]int {
-	return [5][5]int{
-		{unknown, val_one, val_one, val_two, val_one},
-		{val_one, val_one, unknown, val_one, val_one},
-		{voltorb, voltorb, voltorb, voltorb, unknown},
-		{voltorb, unknown, val_two, val_one, val_two},
-		{voltorb, val_one, val_two, unknown, val_two},
-	}
-}
-
-func example_board_invalid() [5][5]int {
-	return [5][5]int{
-		{0, 0, 1, 2, 2},
-		{1, 1, 0, 1, 1},
-		{-1, -1, -1, -1, 0},
-		{-1, 0, 2, 1, 2},
-		{-1, 1, 2, 0, 2},
-	}
 }
