@@ -21,7 +21,6 @@ const (
 	num_rows              = 5
 	num_cols              = 5
 	num_inputs            = 2
-	num_poss              = 4 // depreciated
 	value_sum_maximum     = 5 * 3
 	voltorb_count_maximum = 5 * 1
 )
@@ -32,13 +31,15 @@ type Tile struct {
 	Row   int `validate:"min=0,max=5"`
 	Col   int `validate:"min=0,max=5"`
 	Value int `validate:"min=-1,max=3"`
-	// Poss  [5]bool
-	Poss []int
+	Poss  []int
 }
 
 // Custom to string
 func (t Tile) String() string {
-	return fmt.Sprintf("%d %v", t.Value, t.Poss)
+	if verbose {
+		return fmt.Sprintf("%d %v", t.Value, t.Poss)
+	}
+	return fmt.Sprintf("%d", t.Value)
 }
 
 type Board struct {
@@ -60,12 +61,26 @@ func (b Board) String() string {
 	output := ""
 	for i := range b.Grid {
 		for _, val := range b.Grid[i] {
+			if verbose {
+				output += fmt.Sprintf("[%v]    ", val)
+			} else {
+				output += fmt.Sprintf("[%v]\t", val)
+			}
+		}
+		if verbose {
+			output += fmt.Sprint(b.Vertical[i])
+			output += fmt.Sprint("  ", b.RowStats[i])
+		}
+		output += fmt.Sprintln("")
+	}
+	if verbose {
+		for _, val := range b.Horizontal {
+			output += fmt.Sprintf("[%v]    ", val)
+		}
+		output += fmt.Sprintln("")
+		for _, val := range b.ColStats {
 			output += fmt.Sprintf("[%v]  ", val)
 		}
-		output += fmt.Sprintln(b.Vertical[i])
-	}
-	for _, inp := range b.Horizontal {
-		output += fmt.Sprint(inp)
 	}
 	return fmt.Sprint(output)
 }
