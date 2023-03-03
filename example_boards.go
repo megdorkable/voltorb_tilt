@@ -2,11 +2,11 @@ package main
 
 func example_board_valid_complete() [5][5]int {
 	return [5][5]int{
-		{voltorb, val_one, val_one, val_two, val_one},
-		{val_one, val_one, val_two, val_one, val_one},
-		{voltorb, voltorb, voltorb, voltorb, val_two},
-		{voltorb, val_one, val_two, val_one, val_two},
-		{voltorb, val_one, val_two, voltorb, val_two},
+		{-1, 1, 1, 2, 1},
+		{1, 1, 2, 1, 1},
+		{-1, -1, -1, -1, 2},
+		{-1, 1, 2, 1, 2},
+		{-1, 1, 2, -1, 2},
 	}
 }
 
@@ -32,11 +32,11 @@ func example_input_horizontal() [5][num_inputs]int {
 
 func example_board_valid_incomplete() [5][5]int {
 	return [5][5]int{
-		{unknown, val_one, val_one, val_two, val_one},
-		{val_one, val_one, unknown, val_one, val_one},
-		{voltorb, voltorb, voltorb, voltorb, unknown},
-		{voltorb, unknown, val_two, val_one, val_two},
-		{voltorb, val_one, val_two, unknown, val_two},
+		{0, 1, 1, 2, 1},
+		{1, 1, 0, 1, 1},
+		{-1, -1, -1, -1, 0},
+		{-1, 0, 2, 1, 2},
+		{-1, 1, 2, 0, 2},
 	}
 }
 
