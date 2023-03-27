@@ -21,6 +21,12 @@ func main() {
 		fmt.Println(errs)
 	}
 
-	fmt.Println(b.update())
+	solved := b.update()
 	fmt.Println(b)
+
+	if solved {
+		fmt.Println("Solved!")
+	} else {
+		fmt.Println("Oops, try again.")
+	}
 }

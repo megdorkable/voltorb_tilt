@@ -34,33 +34,60 @@ func (b *Board) update() bool {
 
 	// check if anything has changed
 	changed := false
+	solved := true
 	for row := range b.Grid {
 		for col, val := range b.Grid[row] {
 			if !reflect.DeepEqual(val.Poss, prev_poss[row][col]) {
 				changed = true
+			}
+			if val.Value == UNKNOWN && (has(val.Poss, VAL_TWO) || has(val.Poss, VAL_THREE)) {
+				solved = false
 			}
 		}
 	}
 
 	if changed {
 		// fmt.Println("running again")
-		b.update()
-	}
+		solved = b.update()
+	} else if !solved {
+		flipped := false
+		for row := range b.Grid {
+			for col, val := range b.Grid[row] {
+				if val.Value == UNKNOWN && !has(val.Poss, VOLTORB) && (has(val.Poss, VAL_TWO) || has(val.Poss, VAL_THREE)) {
+					fmt.Println(b)
+					f := flip(row, col)
+					b.Grid[row][col].Value = f
+					b.Grid[row][col].Poss = []int{f}
+					if f == VOLTORB {
+						return false
+					}
+					flipped = true
+					solved = b.update()
+					break
+				}
+			}
+		}
 
-	for row := range b.Grid {
-		for col, val := range b.Grid[row] {
-			if val.Value == UNKNOWN && !has(val.Poss, VOLTORB) {
-				fmt.Println(b)
-				f := flip(row, col)
-				b.Grid[row][col].Value = f
-				b.Grid[row][col].Poss = []int{f}
-				b.update()
-				break
+		if !flipped {
+			for row := range b.Grid {
+				for col, val := range b.Grid[row] {
+					if val.Value == UNKNOWN && (has(val.Poss, VAL_TWO) || has(val.Poss, VAL_THREE)) {
+						fmt.Println(b)
+						f := flip(row, col)
+						b.Grid[row][col].Value = f
+						b.Grid[row][col].Poss = []int{f}
+						if f == VOLTORB {
+							return false
+						}
+						solved = b.update()
+						break
+					}
+				}
 			}
 		}
 	}
 
-	return changed
+	return solved
 }
 
 func (b *Board) refresh_stats() {
@@ -162,7 +189,7 @@ func (b *Board) update_poss(row int) bool {
 	}
 
 	// if remaining number unknown - remaining number voltorbs == remaining sum - 1, can't be VAL_THREE
-	if row_rem_unknown-row_rem_vcount <= row_rem_sum-1 {
+	if row_rem_unknown-row_rem_vcount == row_rem_sum-1 {
 		for col := range b.Grid[row] {
 			if b.Grid[row][col].Value == UNKNOWN {
 				new_poss := []int{}
@@ -171,6 +198,28 @@ func (b *Board) update_poss(row int) bool {
 						new_poss = append(new_poss, pval)
 					}
 				}
+				(*b).Grid[row][col].Poss = new_poss
+				updated = true
+			}
+		}
+	}
+
+	// if remaining number voltorbs == remaining number unknown, must be VOLTORB
+	if row_rem_vcount == row_rem_unknown {
+		for col := range b.Grid[row] {
+			if b.Grid[row][col].Value == UNKNOWN {
+				new_poss := []int{VOLTORB}
+				(*b).Grid[row][col].Poss = new_poss
+				updated = true
+			}
+		}
+	}
+
+	// if remaining sum == remaining number unknown * 3, must be VAL_THREE
+	if row_rem_sum == row_rem_unknown*3 {
+		for col := range b.Grid[row] {
+			if b.Grid[row][col].Value == UNKNOWN {
+				new_poss := []int{VAL_THREE}
 				(*b).Grid[row][col].Poss = new_poss
 				updated = true
 			}
