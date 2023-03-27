@@ -47,40 +47,22 @@ func (b *Board) update() bool {
 	}
 
 	if changed {
-		// fmt.Println("running again")
-		solved = b.update()
+		return b.update()
 	} else if !solved {
-		flipped := false
-		for row := range b.Grid {
-			for col, val := range b.Grid[row] {
-				if val.Value == UNKNOWN && !has(val.Poss, VOLTORB) && (has(val.Poss, VAL_TWO) || has(val.Poss, VAL_THREE)) {
-					fmt.Println(b)
-					f := flip(row, col)
-					b.Grid[row][col].Value = f
-					b.Grid[row][col].Poss = []int{f}
-					if f == VOLTORB {
-						return false
-					}
-					flipped = true
-					solved = b.update()
-					break
-				}
-			}
-		}
-
-		if !flipped {
+		for i := 0; i < 2; i++ {
 			for row := range b.Grid {
 				for col, val := range b.Grid[row] {
-					if val.Value == UNKNOWN && (has(val.Poss, VAL_TWO) || has(val.Poss, VAL_THREE)) {
+					if val.Value == UNKNOWN && (i == 1 || !has(val.Poss, VOLTORB)) &&
+						(has(val.Poss, VAL_TWO) || has(val.Poss, VAL_THREE)) {
 						fmt.Println(b)
 						f := flip(row, col)
 						b.Grid[row][col].Value = f
 						b.Grid[row][col].Poss = []int{f}
 						if f == VOLTORB {
 							return false
+						} else {
+							return b.update()
 						}
-						solved = b.update()
-						break
 					}
 				}
 			}
