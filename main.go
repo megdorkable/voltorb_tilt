@@ -13,13 +13,16 @@ const (
 func main() {
 	validator.SetValidationFunc("valid_input", validate_inputs)
 
-	b := generate_board()
-	b.Vertical = example_input_vertical()
-	b.Horizontal = example_input_horizontal()
+	b := generate_random_board()
+	// fmt.Println(b)
 
-	if errs := b.validate(); errs != nil {
-		fmt.Println(errs)
-	}
+	// b := generate_board()
+	// b.Vertical = example_input_vertical()
+	// b.Horizontal = example_input_horizontal()
+
+	// if errs := b.validate(); errs != nil {
+	// 	fmt.Println(errs)
+	// }
 
 	solved := b.update()
 	fmt.Println(b)
