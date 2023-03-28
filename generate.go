@@ -11,7 +11,7 @@ func randInt(min, max int) int {
 	return min + rand.Intn(max-min)
 }
 
-func generate_random_board() Board {
+func generate_random_board() []Board {
 	validator.SetValidationFunc("valid_input", validate_inputs)
 
 	solution := [5][5]int{}
@@ -31,17 +31,23 @@ func generate_random_board() Board {
 		}
 	}
 
-	fmt.Println(solution)
-	fmt.Println(vertical)
-	fmt.Println(horizontal)
-
 	b := generate_board()
 	b.Vertical = vertical
 	b.Horizontal = horizontal
+
+	bs := generate_board()
+	bs.Vertical = vertical
+	bs.Horizontal = horizontal
+
+	for row := range bs.Grid {
+		for col := range bs.Grid[row] {
+			bs.Grid[row][col].Value = solution[row][col]
+		}
+	}
 
 	if errs := b.validate(); errs != nil {
 		fmt.Println(errs)
 	}
 
-	return b
+	return []Board{b, bs}
 }

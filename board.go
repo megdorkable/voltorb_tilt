@@ -58,30 +58,40 @@ type Stats struct {
 
 // Custom to string
 func (b Board) String() string {
-	output := ""
+	output := fmt.Sprintln("-------------------------------------")
 	for i := range b.Grid {
-		for _, val := range b.Grid[i] {
+		output += "|  "
+		for j, val := range b.Grid[i] {
+			spaces := "   "
 			if verbose {
-				output += fmt.Sprintf("[%v]    ", val)
-			} else {
-				output += fmt.Sprintf("[%v]\t", val)
+				spaces = "\t"
+			} else if j == len(b.Grid[i])-1 {
+				spaces = " "
 			}
+			if val.Value != VOLTORB {
+				spaces += " "
+			}
+			output += fmt.Sprintf("[%v]"+spaces, val)
 		}
+		output += fmt.Sprint("| ", b.Vertical[i])
 		if verbose {
-			output += fmt.Sprint(b.Vertical[i])
 			output += fmt.Sprint("  ", b.RowStats[i])
 		}
 		output += fmt.Sprintln("")
 	}
+	output += fmt.Sprintln("-------------------------------------")
+	output += "  "
+	for _, val := range b.Horizontal {
+		output += fmt.Sprintf("%v  ", val)
+	}
 	if verbose {
-		for _, val := range b.Horizontal {
-			output += fmt.Sprintf("[%v]    ", val)
-		}
 		output += fmt.Sprintln("")
+		output += "  "
 		for _, val := range b.ColStats {
 			output += fmt.Sprintf("[%v]  ", val)
 		}
 	}
+	output += fmt.Sprintln("")
 	return fmt.Sprint(output)
 }
 
