@@ -49,10 +49,21 @@ func (b *Board) update() bool {
 	if changed {
 		return b.update()
 	} else if !solved {
-		for i := 0; i < 2; i++ {
+		for i := 0; i < 4; i++ {
 			for row := range b.Grid {
 				for col, val := range b.Grid[row] {
-					if val.Value == UNKNOWN && (i == 1 || !has(val.Poss, VOLTORB)) &&
+					score := i
+					if has(val.Poss, VAL_ONE) {
+						score += 1
+					}
+					if has(val.Poss, VAL_TWO) {
+						score += 1
+					}
+					if has(val.Poss, VAL_THREE) {
+						score += 1
+					}
+
+					if val.Value == UNKNOWN && ((i > 0 && score == 4) || !has(val.Poss, VOLTORB)) &&
 						(has(val.Poss, VAL_TWO) || has(val.Poss, VAL_THREE)) {
 						fmt.Println(b)
 						f := flip(row, col)

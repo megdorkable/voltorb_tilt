@@ -105,9 +105,11 @@ func validate_inputs(v interface{}, param string) error {
 		sum := rc[0]
 		vcount := rc[1]
 		if sum < 0 || sum > value_sum_maximum {
-			return fmt.Errorf("provided value sum \"%d\" is not within the accepted range: %d - %d", sum, 0, value_sum_maximum)
+			return fmt.Errorf("provided value sum \"%d\" is not within the accepted range: %d - %d",
+				sum, 0, value_sum_maximum)
 		} else if vcount < 0 || vcount > voltorb_count_maximum {
-			return fmt.Errorf("provided voltorb count \"%d\" is not within the accepted range: %d - %d", vcount, 0, voltorb_count_maximum)
+			return fmt.Errorf("provided voltorb count \"%d\" is not within the accepted range: %d - %d",
+				vcount, 0, voltorb_count_maximum)
 		}
 	}
 	return nil

@@ -1,18 +1,26 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 
 	validator "gopkg.in/validator.v2"
 )
 
 const (
-	verbose         = false
-	generate_random = false
+	verbose    = false
+	colorReset = "\033[0m"
+	colorRed   = "\033[31m"
+	colorGreen = "\033[32m"
 )
 
 func main() {
 	validator.SetValidationFunc("valid_input", validate_inputs)
+
+	var generate_random bool
+	flag.BoolVar(&generate_random, "g", false, "generate a random board")
+
+	flag.Parse()
 
 	var b Board
 
@@ -21,8 +29,8 @@ func main() {
 		b = generated[0]
 		solution := generated[1]
 
-		fmt.Println("Generated Board:")
-		fmt.Println(solution)
+		fmt.Println(string(colorGreen) + "Generated Board:")
+		fmt.Println(solution, string(colorReset))
 	} else {
 		b = generate_board()
 		b.Vertical = example_input_vertical()
