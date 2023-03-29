@@ -39,7 +39,13 @@ func (t Tile) String() string {
 	if verbose {
 		return fmt.Sprintf("%d %v", t.Value, t.Poss)
 	}
-	return fmt.Sprintf("%d", t.Value)
+	color := colorReset
+	if t.Value == VOLTORB {
+		color = colorRed
+	} else if t.Value != UNKNOWN {
+		color = colorGreen
+	}
+	return fmt.Sprintf("%s%d%s", string(color), t.Value, string(colorReset))
 }
 
 type Board struct {

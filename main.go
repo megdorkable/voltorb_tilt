@@ -29,8 +29,8 @@ func main() {
 		b = generated[0]
 		solution := generated[1]
 
-		fmt.Println(string(colorGreen) + "Generated Board:")
-		fmt.Println(solution, string(colorReset))
+		fmt.Println(string(colorGreen) + "Generated Board:" + string(colorReset))
+		fmt.Println(solution)
 	} else {
 		b = generate_board()
 		b.Vertical = example_input_vertical()
